@@ -1,0 +1,15 @@
+import { Router } from 'express';
+import { verifyJWT } from '../middlewares/auth.middleware.js';
+import { createContacts } from '../controller/contacts.controller.js';
+import { upload } from '../middlewares/multer.middleware.js';
+
+const router = Router();
+
+router.route('/create-contact').post(
+  upload.fields([{ name: 'avatar', maxCount: 1 }]),
+  //   upload.single('avatar'),
+  verifyJWT,
+  createContacts,
+);
+
+export default router;

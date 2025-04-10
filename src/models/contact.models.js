@@ -18,6 +18,9 @@ const contactSchema = new Schema(
     address: {
       type: String,
     },
+    avatar: {
+      type: String,
+    },
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
