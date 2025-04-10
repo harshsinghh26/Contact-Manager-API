@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import { verifyJWT } from '../middlewares/auth.middleware.js';
-import { createContacts } from '../controller/contacts.controller.js';
+import {
+  createContacts,
+  getContacts,
+} from '../controller/contacts.controller.js';
 import { upload } from '../middlewares/multer.middleware.js';
 
 const router = Router();
@@ -11,5 +14,6 @@ router.route('/create-contact').post(
   verifyJWT,
   createContacts,
 );
+router.route('/get-contact').get(getContacts);
 
 export default router;

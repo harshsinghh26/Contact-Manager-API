@@ -9,7 +9,7 @@ import { uploadOnCloudnary } from '../utils/Cloudinary.js';
 
 const createContacts = ansycHandler(async (req, res) => {
   const { name, phone, email, address } = req.body;
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user?._id);
 
   if (!(name && email && phone && address)) {
     throw new ApiError(400, 'All Fields are required!!');
@@ -59,8 +59,24 @@ const createContacts = ansycHandler(async (req, res) => {
   return res
     .status(201)
     .json(
-      new ApiResponse(200, createContacts, 'Contacts Created Successfully!!'),
+      new ApiResponse(
+        200,
+        { createContacts, user: user.username },
+        'Contacts Created Successfully!!',
+      ),
     );
 });
 
-export { createContacts };
+// Get All contacts
+
+const getContacts = ansycHandler(async (req, res) => {
+  const contact = await Contact.find({ user: req.user?._id });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, contact, 'Contacts Fetched Successfully!!'));
+});
+
+// get contacts by id
+
+export { createContacts, getContacts };
