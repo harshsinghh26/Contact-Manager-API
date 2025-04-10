@@ -1,4 +1,3 @@
-import app from '../app.js';
 import { Contact } from '../models/contact.models.js';
 import { User } from '../models/users.models.js';
 import { ApiError } from '../utils/ApiErrors.js';
@@ -18,6 +17,7 @@ const createContacts = ansycHandler(async (req, res) => {
 
   const duplicateContact = await Contact.findOne({
     $or: [{ name }, { phone }],
+    user: req.user._id,
   });
 
   if (duplicateContact) {
