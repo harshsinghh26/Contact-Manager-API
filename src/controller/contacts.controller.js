@@ -79,4 +79,14 @@ const getContacts = ansycHandler(async (req, res) => {
 
 // get contacts by id
 
-export { createContacts, getContacts };
+const getContactsById = ansycHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const contact = await Contact.findById(id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, contact, 'Contact fetched Successfully!!'));
+});
+
+export { createContacts, getContacts, getContactsById };

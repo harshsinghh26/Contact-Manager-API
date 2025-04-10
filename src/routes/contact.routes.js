@@ -3,6 +3,7 @@ import { verifyJWT } from '../middlewares/auth.middleware.js';
 import {
   createContacts,
   getContacts,
+  getContactsById,
 } from '../controller/contacts.controller.js';
 import { upload } from '../middlewares/multer.middleware.js';
 
@@ -15,5 +16,6 @@ router.route('/create-contact').post(
   createContacts,
 );
 router.route('/get-contact').get(getContacts);
+router.route('/get-contact/:id').get(verifyJWT, getContactsById);
 
 export default router;
