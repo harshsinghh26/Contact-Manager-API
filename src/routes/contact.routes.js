@@ -4,6 +4,7 @@ import {
   createContacts,
   getContacts,
   getContactsById,
+  updateContactAvatar,
   updateContactDetails,
 } from '../controller/contacts.controller.js';
 import { upload } from '../middlewares/multer.middleware.js';
@@ -19,5 +20,8 @@ router.route('/create-contact').post(
 router.route('/get-contact').get(getContacts);
 router.route('/get-contact/:id').get(verifyJWT, getContactsById);
 router.route('/update/:id').patch(verifyJWT, updateContactDetails);
+router
+  .route('/update-avatar/:id')
+  .patch(verifyJWT, upload.single('avatar'), updateContactAvatar);
 
 export default router;

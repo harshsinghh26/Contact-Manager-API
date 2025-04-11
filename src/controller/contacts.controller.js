@@ -117,4 +117,39 @@ const updateContactDetails = ansycHandler(async (req, res) => {
     );
 });
 
-export { createContacts, getContacts, getContactsById, updateContactDetails };
+// Update contact avatar
+
+const updateContactAvatar = ansycHandler(async (req, res) => {
+  const avatarFilePath = req.file?.path;
+  const { id } = req.params;
+
+  if (!avatarFilePath) {
+    throw new ApiError(400, 'Avatar is Required!!');
+  }
+  const avatar = await uploadOnCloudnary(avatarFilePath);
+
+  if (!avatar.url) {
+    throw new ApiError(500, 'Server Error while Uploading!!');
+  }
+  const contact = await Contact.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        avatar: avatar.url,
+      },
+    },
+    { new: true },
+  );
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, contact, 'Avatar Chnaged Successfully!!'));
+});
+
+export {
+  createContacts,
+  getContacts,
+  getContactsById,
+  updateContactDetails,
+  updateContactAvatar,
+};
