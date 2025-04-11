@@ -89,4 +89,32 @@ const getContactsById = ansycHandler(async (req, res) => {
     .json(new ApiResponse(200, contact, 'Contact fetched Successfully!!'));
 });
 
-export { createContacts, getContacts, getContactsById };
+// Update contact details
+
+const updateContactDetails = ansycHandler(async (req, res) => {
+  const { name, phone } = req.body;
+  const { id } = req.params;
+
+  if (!(name && phone)) {
+    throw new ApiError(400, 'All Fields are Required');
+  }
+
+  const contacts = await Contact.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        name,
+        phone,
+      },
+    },
+    { new: true },
+  );
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, contacts, 'Contacts details changed successfully!!'),
+    );
+});
+
+export { createContacts, getContacts, getContactsById, updateContactDetails };
