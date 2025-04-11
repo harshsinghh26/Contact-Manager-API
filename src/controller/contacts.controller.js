@@ -4,6 +4,7 @@ import { ApiError } from '../utils/ApiErrors.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { ansycHandler } from '../utils/AsyncHandler.js';
 import { uploadOnCloudnary } from '../utils/Cloudinary.js';
+import { v2 as cloudinary } from 'cloudinary';
 
 // creating contacts
 
@@ -146,10 +147,23 @@ const updateContactAvatar = ansycHandler(async (req, res) => {
     .json(new ApiResponse(200, contact, 'Avatar Chnaged Successfully!!'));
 });
 
+// Delete Contact
+
+const deleteContact = ansycHandler(async (req, res) => {
+  const { id } = req.params;
+
+  await Contact.findByIdAndDelete(id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, 'Contact deleted Successfully!!'));
+});
+
 export {
   createContacts,
   getContacts,
   getContactsById,
   updateContactDetails,
   updateContactAvatar,
+  deleteContact,
 };

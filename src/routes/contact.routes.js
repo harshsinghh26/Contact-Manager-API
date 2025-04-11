@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { verifyJWT } from '../middlewares/auth.middleware.js';
 import {
   createContacts,
+  deleteContact,
   getContacts,
   getContactsById,
   updateContactAvatar,
@@ -23,5 +24,6 @@ router.route('/update/:id').patch(verifyJWT, updateContactDetails);
 router
   .route('/update-avatar/:id')
   .patch(verifyJWT, upload.single('avatar'), updateContactAvatar);
+router.route('/delete/:id').delete(verifyJWT, deleteContact);
 
 export default router;
