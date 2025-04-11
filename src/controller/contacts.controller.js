@@ -5,6 +5,7 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 import { ansycHandler } from '../utils/AsyncHandler.js';
 import { uploadOnCloudnary } from '../utils/Cloudinary.js';
 import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
 
 // creating contacts
 
@@ -125,10 +126,22 @@ const updateContactAvatar = ansycHandler(async (req, res) => {
   const avatarFilePath = req.file?.path;
   const { id } = req.params;
 
+  const contactId = await Contact.findById(id);
+
+  if (!contactId) {
+    throw new ApiError(404, 'Contact not found!!');
+  }
+
   if (!avatarFilePath) {
     throw new ApiError(400, 'Avatar is Required!!');
   }
-  const avatar = await uploadOnCloudnary(avatarFilePath);
+
+  const avatar = await cloudinary.uploader.upload(avatarFilePath, {
+    public_id: contactId?.avatarId,
+    overwrite: true,
+  });
+
+  fs.unlinkSync(avatarFilePath);
 
   if (!avatar.url) {
     throw new ApiError(500, 'Server Error while Uploading!!');
