@@ -51,6 +51,7 @@ const createContacts = ansycHandler(async (req, res) => {
     phone,
     address,
     avatar: contactAvatar?.url || '',
+    avatarId: contactAvatar?.public_id || '',
     userId: user,
   });
 
@@ -151,6 +152,16 @@ const updateContactAvatar = ansycHandler(async (req, res) => {
 
 const deleteContact = ansycHandler(async (req, res) => {
   const { id } = req.params;
+
+  const contact = await Contact.findById(id);
+
+  if (!contact) {
+    throw new ApiError(404, 'Contact not found!!');
+  }
+
+  if (contact.avatarId) {
+    await cloudinary.uploader.destroy(contact.avatarId);
+  }
 
   await Contact.findByIdAndDelete(id);
 

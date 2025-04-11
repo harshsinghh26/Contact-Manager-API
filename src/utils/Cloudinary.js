@@ -16,9 +16,9 @@ const uploadOnCloudnary = async (localFilePath) => {
 
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: 'auto',
-      folder: 'contacts',
     });
     fs.unlinkSync(localFilePath);
+    // console.log(response.public_id);
     return response;
   } catch (error) {
     fs.unlinkSync(localFilePath);
