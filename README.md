@@ -28,7 +28,7 @@ A secure and easy-to-use RESTful API for managing personal and professional cont
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/ContactVault-API.git
+   git clone https://github.com/harshsingh26/ContactVault-API.git
    cd ContactVault-API
    
 2. Install dependencies:
